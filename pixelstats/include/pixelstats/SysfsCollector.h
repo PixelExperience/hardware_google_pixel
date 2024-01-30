@@ -75,6 +75,8 @@ class SysfsCollector {
         const char *const CCARatePath;
         const std::vector<std::pair<std::string, std::string>> TempResidencyAndResetPaths;
         const char *const LongIRQMetricsPath;
+        const char *const StormIRQMetricsPath;
+        const char *const IRQStatsResetPath;
         const char *const ResumeLatencyMetricsPath;
         const char *const ModemPcieLinkStatsPath;
         const char *const WifiPcieLinkStatsPath;
@@ -82,6 +84,9 @@ class SysfsCollector {
         const char *const WavesPath;
         const char *const AdaptedInfoCountPath;
         const char *const AdaptedInfoDurationPath;
+        const char *const PcmLatencyPath;
+        const char *const PcmCountPath;
+        const char *const TotalCallCountPath;
     };
 
     SysfsCollector(const struct SysfsPaths &paths);
@@ -134,6 +139,7 @@ class SysfsCollector {
     void logPcieLinkStats(const std::shared_ptr<IStats> &stats_client);
     void logWavesStats(const std::shared_ptr<IStats> &stats_client);
     void logAdaptedInfoStats(const std::shared_ptr<IStats> &stats_client);
+    void logPcmUsageStats(const std::shared_ptr<IStats> &stats_client);
 
     const char *const kSlowioReadCntPath;
     const char *const kSlowioWriteCntPath;
@@ -167,6 +173,8 @@ class SysfsCollector {
     const char *const kCCARatePath;
     const std::vector<std::pair<std::string, std::string>> kTempResidencyAndResetPaths;
     const char *const kLongIRQMetricsPath;
+    const char *const kStormIRQMetricsPath;
+    const char *const kIRQStatsResetPath;
     const char *const kResumeLatencyMetricsPath;
     const char *const kModemPcieLinkStatsPath;
     const char *const kWifiPcieLinkStatsPath;
@@ -175,6 +183,9 @@ class SysfsCollector {
     const char *const kWavesPath;
     const char *const kAdaptedInfoCountPath;
     const char *const kAdaptedInfoDurationPath;
+    const char *const kPcmLatencyPath;
+    const char *const kPcmCountPath;
+    const char *const kTotalCallCountPath;
 
     BatteryEEPROMReporter battery_EEPROM_reporter_;
     MmMetricsReporter mm_metrics_reporter_;
@@ -194,8 +205,6 @@ class SysfsCollector {
     int64_t prev_huge_pages_since_boot_ = -1;
 
     struct perf_metrics_data {
-        int64_t softirq_count;
-        int64_t irq_count;
         uint64_t resume_latency_sum_ms;
         int64_t resume_count;
         std::vector<int64_t> resume_latency_buckets;
